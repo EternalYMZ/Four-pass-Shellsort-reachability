@@ -1,0 +1,11 @@
+import Shellsort.RetainedGapOrder
+import Shellsort.SemigroupPassDistance
+import Shellsort.SlotCollisionPenalty
+import Shellsort.WordSlotPotential
+
+#check Shellsort.slotPotential_checkpoint
+#print axioms Shellsort.slotPotential_checkpoint
+#check Shellsort.slotPotential_twoBlock
+#print axioms Shellsort.slotPotential_twoBlock
+#check Shellsort.twoBlock_slot_deficit
+#print axioms Shellsort.twoBlock_slot_deficit

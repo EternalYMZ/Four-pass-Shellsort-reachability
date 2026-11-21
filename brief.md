@@ -1,9 +1,9 @@
-# 每个键都有路可走，所有键能同时走通吗？
+# Can all keys follow individually feasible paths?
 
-取奇数 $m\ge5$，用间隔 $(m,4,2,1)$ 排 $n=2m$ 个互异键。第一遍把数组分成 $m$ 对。对其中任意一个键，沿后续各趟追踪“它可能到达哪些槽”，在末遍前可以列出许多目的地。可是为每个键分别选路线，容易让两个键同时占用一个槽，还可能要求同一次比较同时给出相反结果。这直接影响对末遍成本的估计。
+With odd $m\ge5$, set $n=2m$ and use gaps $(m,4,2,1)$. The first pass partitions the slots into pairs. Individual paths to later destinations can compete for a slot or require opposite outcomes of one comparison.
 
-**怎样从槽位冲突中得到右移下界？** 对每个键 $x$ 和每个物理槽 $i$ 指定数值 $U(x,i)$。若沿某一允许间隔走一格时，这个数的变化至多为 $1$，将一次成功右移看作两个键的一次链内相邻交换，总数值的变化就至多为 $2$。选一个中间数组，对之前、之后的间隔分别构造这样的函数。在该数组上，每个键和每个槽恰好各出现一次。若一组 $T$ 中的键只有落在槽集 $S$ 中才能避免一项额外代价，且 $|T|>|S|$，则至少 $|T|-|S|$ 个键必须付出它。把这笔代价加入两段的数值差，就得到对真实右移数的下界。
+Assign a potential $U(x,i)$ to key $x$ in slot $i$. If a one-step move at an allowed gap changes a key's potential by at most one, an elementary exchange representing a successful shift changes the total by at most two. Choose potentials separately before and after a checkpoint. Every slot there holds exactly one key. If keys in a set $T$ can avoid an extra cost only in slots $S$, then at least $|T|-|S|$ keys pay it whenever $|T|>|S|$. Adding this penalty to the potential differences bounds actual shifts. For $(2,0,3,1)$ and gaps $(2,1)$ a four-slot certificate gives a lower bound of three, attained by the final pass.
 
-Lean 已证明这条一般的不等式。一个能手算的例子是 $(2,0,3,1)$ 按 $(2,1)$ 排序。首遍两条链都已有序，末遍正好消除三个逆序。仓库中的四槽证书直接从槽位约束推出总右移数至少为 $3$。[槽位冲突下界](https://github.com/EternalYMZ/Four-pass-Shellsort-reachability/blob/f9c50e72c0bd6a3496b86e5c9d02acd86a8cb805/Shellsort/SlotCollisionPenalty.lean) · [四槽证书](https://github.com/EternalYMZ/Four-pass-Shellsort-reachability/blob/f9c50e72c0bd6a3496b86e5c9d02acd86a8cb805/FourSlotExample.lean)
+For the four-pass family on uniform inputs, individual reachability plus one key per slot gives a relaxed assignment bound of zero on final-pass shifts. Allowing rank-informed orientations of the first pairs followed by ordinary gaps 4 and 2 gives an optimal mean final-pass cost of order $n$. Restoring the actual first comparisons gives order $n^{3/2}$. The general potential inequality and four-slot certificate are formalized; the full three-way comparison is analytical.
 
-四遍例子还有一条解析结论。对均匀随机输入，若只保留各个原始槽到每个末遍前槽位的个别可达性，并要求每槽放一个键，最优指派给出的末遍右移下界是零。若允许看过秩后在首遍的每对中任选朝向，再照常执行间隔 $4,2$，最优平均末遍右移是 $\Theta(n)$。恢复首遍的真实比较后，平均末遍右移是 $\Theta(n^{3/2})$。这三个量都只计末遍；四遍族的这一整组比较目前仍待端到端形式化。
+[SlotCollisionPenalty.lean](https://github.com/EternalYMZ/Four-pass-Shellsort-reachability/blob/f9c50e72c0bd6a3496b86e5c9d02acd86a8cb805/Shellsort/SlotCollisionPenalty.lean) · [FourSlotExample.lean](https://github.com/EternalYMZ/Four-pass-Shellsort-reachability/blob/f9c50e72c0bd6a3496b86e5c9d02acd86a8cb805/FourSlotExample.lean)
